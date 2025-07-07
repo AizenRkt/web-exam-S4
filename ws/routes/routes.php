@@ -29,5 +29,12 @@ Flight::route('GET /etablissement', ['EtablissementController', 'afficher']);
 Flight::route('GET /investisseur', ['InvestisseurController', 'afficher']);
 
 // Login
-Flight::route('GET /login', ['LoginController', 'afficher']);
+Flight::route('GET /login', ['LoginController', 'afficher_log']);
 Flight::route('POST /login', ['LoginController', 'connecter']);
+Flight::route('GET /signin', ['LoginController', 'afficher_sign']);
+Flight::route('POST /signin', ['LoginController', 'inscrire']);
+
+// Après connexion
+Flight::route('GET /directeur/dashboard', ['HelloController', 'afficher']);
+Flight::route('GET /employe/dashboard', ['HelloController', 'afficher']);
+

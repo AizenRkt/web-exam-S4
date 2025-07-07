@@ -5,71 +5,95 @@ require_once __DIR__ . '/../../../ws/config/config.php';
 <html lang="fr">
 
 <head>
-    <meta charset="UTF-8">
-    <title>Créer un compte</title>
-    <link rel="stylesheet" href="<?= BASE_URL ?>/public/assets/css/login.css">
+  <meta charset="UTF-8">
+  <title>Inscription</title>
+  <link rel="stylesheet" href="<?= BASE_URL ?>/public/assets/css/login.css">
 </head>
 
 <body>
+<div class="container-login" style="height: 700px">
+    <div class="logo-box">
+        <img src="<?= BASE_URL ?>/public/assets/img/Logo.png" alt="Logo" />
+    </div>
+    <div class="form-box ring">
+        <i style="--clr:#00ff0a;"></i>
+        <i style="--clr:#ff0057;"></i>
+        <i style="--clr:#fffd44;"></i>
 
-    <form class="form" action="<?= BASE_URL ?>/client/create" method="post">
-        <h2 class="title">Créer un compte</h2>
+        <form id="registerForm" class="login" >
+            <h2>Inscription</h2>
+            <div id="erreur" style="color:red;"></div>
 
-        <!-- Rôle -->
-        <div class="flex-column">
-            <label for="id_role">Rôle</label>
-        </div>
-        <div class="inputForm">
-            <select name="id_role" id="id_role" class="input" required>
-                <?php foreach ($roles as $role): ?>
-                    <option value="<?= $role['id'] ?>" <?= $role['id'] == 3 ? 'selected' : '' ?>>
-                        <?= htmlspecialchars($role['valeur']) ?>
-                    </option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+            <div class="inputBx">
+                <input type="text" name="nom" placeholder="Nom" required>
+            </div>
+            <div class="inputBx">
+                <input type="text" name="prenom" placeholder="Prénom" required>
+            </div>
+            <div class="inputBx">
+                <input type="email" name="email" placeholder="Email" required>
+            </div>
+            <div class="inputBx">
+                <input type="password" name="mot_de_passe" placeholder="Mot de passe" required>
+            </div>
+            <div class="inputBx">
+                <input type="text" name="telephone" placeholder="Téléphone">
+            </div>
+            <div class="inputBx">
+                <input type="text" name="adresse" placeholder="Adresse">
+            </div>
+            <div class="inputBx">
+                <select name="id_role" required>
+                    <option value="">-- Choisir un rôle --</option>
+                    <option value="1">Directeur</option>
+                    <option value="2">Employé</option>
+                </select>
+            </div>
+            <div class="inputBx">
+                <input type="submit" value="S'inscrire">
+            </div>
+        </form>
+    </div>
+</div>
 
+<script>
+document.getElementById("registerForm").addEventListener("submit", function(e) {
+    e.preventDefault();
 
-        <!-- Nom -->
-        <div class="flex-column">
-            <label for="nom">Nom</label>
-        </div>
-        <div class="inputForm">
-            <svg height="20" width="20" viewBox="0 0 24 24">
-                <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z" />
-            </svg>
-            <input type="text" class="input" name="nom" id="nom" placeholder="Entrez votre nom" required>
-        </div>
+    const form = e.target;
+    const data = {
+        nom: form.nom.value,
+        prenom: form.prenom.value,
+        email: form.email.value,
+        mot_de_passe: form.mot_de_passe.value,
+        telephone: form.telephone.value,
+        adresse: form.adresse.value,
+        id_role: form.id_role.value
+    };
 
-        <!-- Prénom -->
-        <div class="flex-column">
-            <label for="prenom">Prénom</label>
-        </div>
-        <div class="inputForm">
-            <svg height="20" width="20" viewBox="0 0 24 24">
-                <path d="M12 12c2.7 0 5-2.3 5-5s-2.3-5-5-5-5 2.3-5 5 2.3 5 5 5zm0 2c-3.3 0-10 1.7-10 5v3h20v-3c0-3.3-6.7-5-10-5z" />
-            </svg>
-            <input type="text" class="input" name="prenom" id="prenom" placeholder="Entrez votre prénom" required>
-        </div>
+    console.log("Données envoyées :", data);
 
-        <!-- Mot de passe -->
-        <div class="flex-column">
-            <label for="pwd">Mot de passe</label>
-        </div>
-        <div class="inputForm">
-            <svg height="20" width="20" viewBox="0 0 24 24">
-                <path d="M12 17a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm6-7h-1V7a5 5 0 0 0-10 0v3H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8a2 2 0 0 0-2-2zM8 7a4 4 0 1 1 8 0v3H8V7z" />
-            </svg>
-            <input type="password" class="input" name="pwd" id="pwd" placeholder="Entrez votre mot de passe" required>
-        </div>
-
-        <button type="submit" class="button-submit">Créer le compte</button>
-
-        <p class="p">
-            <a href="<?= BASE_URL ?>/login">Déjà inscrit ? <span class="span">Se connecter</span></a>
-        </p>
-    </form>
-
+    fetch("<?= BASE_URL ?>/signin", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+    })
+    .then(res => res.json())
+    .then(response => {
+        console.log("Réponse :", response);
+        if (response.success) {
+            alert("Inscription réussie !");
+            window.location.href = "<?= BASE_URL ?>/login";
+        } else {
+            document.getElementById("erreur").textContent = response.message;
+        }
+    })
+    .catch(error => {
+        console.error("Erreur serveur :", error);
+        document.getElementById("erreur").textContent = "Erreur serveur.";
+    });
+});
+</script>
 </body>
 
 </html>
