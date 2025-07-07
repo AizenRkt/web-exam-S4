@@ -33,7 +33,7 @@
   </table>
 
   <script>
-    const apiBase = "http://localhost<?= Flight::base() ?>";
+    const apiBase = "http://localhost<?= Flight::request()->base ?>";
 
     function ajax(method, url, data, callback, sendJson = false) {
       const xhr = new XMLHttpRequest();

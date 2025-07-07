@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../models/Pret.php';
-require_once __DIR__ . '/../helpers/Utils.php';
+require_once __DIR__ . '/../../models/pret/Pret.php';
+require_once __DIR__ . '/../../helpers/Utils.php';
 
 class PretController {
     public static function getAll() {

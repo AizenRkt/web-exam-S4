@@ -1,6 +1,6 @@
 <?php
-require_once __DIR__ . '/../models/ValidationPret.php';
-require_once __DIR__ . '/../helpers/Utils.php';
+require_once __DIR__ . '/../../models/pret/ValidationPret.php';
+require_once __DIR__ . '/../../helpers/Utils.php';
 
 class ValidationPretController {
     public static function getAll() {
