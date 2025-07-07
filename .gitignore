@@ -1,0 +1,4 @@
+.vscode/
+ws/config/config.php
+ws/db.php
+sql/query.sql
