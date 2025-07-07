@@ -35,6 +35,21 @@ class Pret {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+    public static function getByIdWithDetails($id) {
+        $db = getDB();
+        $stmt = $db->prepare("
+            SELECT p.*, c.nom as client_nom, c.prenom as client_prenom, c.email as client_email, 
+                   c.telephone as client_telephone, c.adresse as client_adresse,
+                   tp.libelle as type_pret_libelle, tp.taux_interet, tp.description as type_pret_description
+            FROM pret p
+            JOIN client c ON p.id_client = c.id
+            JOIN type_pret tp ON p.id_type_pret = tp.id
+            WHERE p.id = ?
+        ");
+        $stmt->execute([$id]);
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
     public static function create($data) {
         $db = getDB();
         $stmt = $db->prepare("INSERT INTO pret (libelle, montant, id_type_pret, id_client, nombre_mensualite) VALUES (?, ?, ?, ?, ?)");

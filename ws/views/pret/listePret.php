@@ -25,7 +25,7 @@
 </table>
 
 <script>
-const apiBase = "http://localhost<?= Flight::request()->base ?>";
+const apiBase = '<?= Flight::request()->base ?>';
 
 function ajax(method, url, data, callback, sendJson = false) {
   const xhr = new XMLHttpRequest();
@@ -64,7 +64,7 @@ function chargerPrets() {
 }
 
 function validerPret(id_pret, id_utilisateur) {
-  ajax("POST", "/prets/" + id_pret + "/valider", { id_utilisateur }, () => {
+  ajax("POST",  "/prets/" + id_pret + "/valider", { id_utilisateur }, () => {
     alert("Prêt validé !");
     chargerPrets();
   }, true);
