@@ -2,6 +2,26 @@
 require_once __DIR__ . '/../../db.php';
 
 class Pret {
+    public static function validerPret($id_pret, $id_utilisateur) {
+        $db = getDB();
+        $stmt = $db->prepare("INSERT INTO validation_pret (id_pret, id_utilisateur, status) VALUES (?, ?, true)");
+        $stmt->execute([$id_pret, $id_utilisateur]);
+    }
+
+    public static function rejeterPret($id_pret, $id_utilisateur) {
+        $db = getDB();
+        $stmt = $db->prepare("INSERT INTO validation_pret (id_pret, id_utilisateur, status) VALUES (?, ?, false)");
+        $stmt->execute([$id_pret, $id_utilisateur]);
+    }
+
+    public static function isPretValide($id_pret) {
+        $db = getDB();
+        $stmt = $db->prepare("SELECT status FROM validation_pret WHERE id_pret = ? ORDER BY date DESC LIMIT 1");
+        $stmt->execute([$id_pret]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result && $result['status'] === '1';
+    }
+
     public static function getAll() {
         $db = getDB();
         $stmt = $db->query("SELECT * FROM pret");
