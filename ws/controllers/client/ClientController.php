@@ -1,37 +1,46 @@
 <?php
-require_once __DIR__ . '/../../models/other/User.php';
-require_once __DIR__ . '/../../models/other/Role.php';
+require_once __DIR__ . '/../../models/client/Client.php';
+require_once __DIR__ . '/../../models/client/TypeClient.php';
+require_once __DIR__ . '/../../db.php';
 
-class ClientController
-{
-    // Affiche la page d'accueil client
-    public static function afficher()
-    {
-        include __DIR__ . '/../../views/client/home.php';
+class ClientController {
+    public static function getAll() {
+        $clients = Client::getAll();
+        Flight::json($clients);
     }
 
-    // Affiche le formulaire de création
-    public static function create()
-    {
-        $roles = Role::getAll(); // Récupère tous les rôles pour le formulaire
-        include __DIR__ . '/../../views/other/signin.php';
+    public static function getById($id) {
+        $client = Client::getById($id);
+        Flight::json($client);
     }
 
-    // Traite la soumission du formulaire (POST)
-    public static function store()
-    {
-        // Récupère les données envoyées en POST
-        $data = (object)[
-            'id_role' => Flight::request()->data->id_role,
-            'nom'     => Flight::request()->data->nom,
-            'prenom'  => Flight::request()->data->prenom,
-            'pwd'     => Flight::request()->data->pwd
-        ];
-
-        // Appelle la méthode de création
-        User::create($data);
-
-        // Redirige vers la page d’accueil ou une page de confirmation
-        Flight::redirect('/login');
+    public static function addClient() {
+        $data = Flight::request()->data;
+        $id = Client::create($data);
+        Flight::json(['message' => 'Client ajouté', 'id' => $id]);
     }
-}
+
+    public static function update($id) {
+        $data = Flight::request()->data;
+        Client::update($id, $data);
+        Flight::json(['message' => 'Client modifié']);
+    }
+
+    public static function delete($id) {
+        Client::delete($id);
+        Flight::json(['message' => 'Client supprimé']);
+    }
+
+    public static function getTypeClient() {
+        $types = TypeClient::getAll();
+        Flight::json($types);
+    }
+
+    public static function showAddForm() {
+        Flight::render('client/add.php');
+    }
+
+    public static function showList() {
+        include __DIR__ . '/../../views/client/list.php';
+    }
+} 
