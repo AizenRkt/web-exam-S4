@@ -1,0 +1,51 @@
+# Projet : Etablissement financier & prêt bancaire - Étape 2
+# Date : 07 Juillet 2025
+# Tech : FlightPHP + WS + Ajax simple
+
+[1] Gestion du fond de l'établissement financier
+    - [ ] Créer route API POST /etablissements/@id/fonds pour ajouter fond
+    - [ ] Valider le montant reçu (positif, numérique)
+    - [ ] Mettre à jour le champ fond_disponible dans la table etablissement_financier (ajout du montant)
+    - [ ] Retourner confirmation JSON (succès / erreur)
+    - [ ] Créer formulaire web (Bootstrap) pour sélectionner un établissement et saisir un montant à ajouter
+    - [ ] Implémenter AJAX pour envoyer la demande sans rechargement de page
+    - [ ] Gérer les erreurs côté client (ex: montant invalide)
+    - [ ] Afficher un message succès ou erreur à l’utilisateur
+
+[2] Création et gestion des types de prêt
+    - [ ] Créer route API POST /types-pret pour créer un nouveau type de prêt
+    - [ ] Valider les champs reçus : nom (non vide), taux_annuel (≥ 0), duree_max (entier > 0)
+    - [ ] Insérer le nouveau type dans la table type_pret
+    - [ ] Retourner JSON avec l’ID et détails du type créé
+    - [ ] Créer formulaire web (Bootstrap) pour saisir nom, taux, durée max
+    - [ ] Afficher la liste des types de prêt disponibles (GET /types-pret)
+    - [ ] Implémenter AJAX pour la création et affichage dynamique
+    - [ ] Gérer erreurs et validations côté client
+
+[3] Gestion des prêts clients
+    - [ ] Créer route API POST /prets pour faire une demande de prêt
+    - [ ] Valider données reçues : client_id, type_pret_id, etablissement_id, montant (>0), durée (≤ duree_max du type)
+    - [ ] Vérifier si l’établissement financier a un fond_disponible suffisant pour le montant demandé
+        - Si non suffisant, renvoyer une erreur
+    - [ ] Enregistrer la demande dans la table pret avec statut = 'en_attente' et date_demande actuelle
+    - [ ] Retourner confirmation JSON avec ID prêt ou message d’erreur
+    - [ ] Créer formulaire web (Bootstrap) pour le client :
+        - Sélection client (si multi-client admin)
+        - Sélection type de prêt (charger via API)
+        - Sélection établissement (charger via API)
+        - Saisie montant et durée
+    - [ ] Implémenter AJAX pour envoyer la demande de prêt
+    - [ ] Gérer erreurs (ex : fond insuffisant, validation)
+    - [ ] Afficher message de succès ou erreur à l’utilisateur
+
+[4] Tests & validation globale
+    - [ ] Tester toutes les routes API via Postman ou autre outil
+    - [ ] Tester formulaires web et AJAX en condition réelle
+    - [ ] Gérer cas d’erreurs inattendues (ex : requête mal formée)
+    - [ ] Faire un rapport rapide d’usage des API (ex : README.md)
+
+[5] Préparation déploiement
+    - [ ] Préparer le projet GitHub/GitLab public
+    - [ ] Ajouter instructions pour lancer le projet et base de données
+    - [ ] Tester déploiement sur serveur ITU
+
