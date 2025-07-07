@@ -2,6 +2,7 @@
 require_once __DIR__ . '/../controllers/client/ClientController.php';
 require_once __DIR__ . '/../controllers/other/LoginController.php';
 require_once __DIR__ . '/../routes/client_routes.php';
+require_once __DIR__ . '/../routes/investissement_routes.php';
 
 // //  Étudiant
 // Flight::route('GET /etudiants', ['EtudiantController', 'getAll']);
