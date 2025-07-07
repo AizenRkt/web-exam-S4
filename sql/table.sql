@@ -1,3 +1,4 @@
+-- Active: 1751871771198@@127.0.0.1@3306@db_s2_etu003263
 
 CREATE TABLE role (
     id INTEGER PRIMARY KEY,
