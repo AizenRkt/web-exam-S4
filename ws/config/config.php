@@ -1,2 +1,2 @@
 <?php
-define('BASE_URL', '/S4/examenS4/projetS4/ws'); 
+define('BASE_URL', '/web-exam-S4/ws'); 

@@ -1,13 +1,13 @@
 -- Active: 1751871771198@@127.0.0.1@3306@db_s2_etu003263
 
 CREATE TABLE role (
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     libelle VARCHAR(100) NOT NULL,  -- 'administrateur'
     description TEXT
 );
 
 CREATE TABLE utilisateur (
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     nom VARCHAR(255) NOT NULL,
     prenom VARCHAR(255) NOT NULL,
     email VARCHAR(255) NOT NULL UNIQUE,
@@ -20,14 +20,14 @@ CREATE TABLE utilisateur (
 );
 
 CREATE TABLE type_client (
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     libelle VARCHAR(255) NOT NULL,-- entreprise, particulier,etat
     description TEXT,
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE client (
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     id_type_client INTEGER NOT NULL,
     nom VARCHAR(255) NOT NULL,
     prenom VARCHAR(255) NOT NULL,
@@ -39,7 +39,7 @@ CREATE TABLE client (
 );
 
 CREATE TABLE type_investissement(
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     libelle VARCHAR(255) NOT NULL,
     taux_interet DOUBLE PRECISION,
     description TEXT,
@@ -47,7 +47,7 @@ CREATE TABLE type_investissement(
 );
 
 CREATE TABLE investissement(
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     libelle VARCHAR(255) NOT NULL,
     montant DOUBLE PRECISION,
     id_client INTEGER NOT NULL,
@@ -58,7 +58,7 @@ CREATE TABLE investissement(
 );
 
 CREATE TABLE type_pret(
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     libelle VARCHAR(255) NOT NULL,
     taux_interet DOUBLE PRECISION,
     description TEXT,
@@ -66,7 +66,7 @@ CREATE TABLE type_pret(
 );
 
 CREATE TABLE pret(
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     libelle VARCHAR(255) NOT NULL,
     montant DOUBLE PRECISION,
     id_type_pret INTEGER NOT NULL,
@@ -78,7 +78,7 @@ CREATE TABLE pret(
 );
 
 CREATE TABLE validation_pret(
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     id_pret INTEGER NOT NULL,
     id_utilisateur INTEGER NOT NULL,
     status BOOLEAN NOT NULL,
@@ -88,14 +88,14 @@ CREATE TABLE validation_pret(
 );
 
 CREATE TABLE type_payement(
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     libelle VARCHAR(255) NOT NULL,
     description TEXT,
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE payement(
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     id_pret INTEGER NOT NULL,
     id_type_payement INTEGER NOT NULL,
     montant DOUBLE PRECISION,
@@ -105,9 +105,11 @@ CREATE TABLE payement(
 );
 
 CREATE TABLE compte(
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
     solde DOUBLE PRECISION,
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+
 
 
