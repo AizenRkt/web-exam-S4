@@ -33,4 +33,35 @@ class Investissement {
         $stmt = $db->prepare("DELETE FROM investissement WHERE id = ?");
         $stmt->execute([$id]);
     }
+
+    public static function createWithCompte($data) {
+        $db = getDB();
+        try {
+            $db->beginTransaction();
+    
+            // 1. Ajouter le compte
+            $stmtCompte = $db->prepare("INSERT INTO compte (solde) VALUES (?)");
+            $stmtCompte->execute([$data->montant]);
+            $id_compte = $db->lastInsertId();
+    
+            // 2. Ajouter l'investissement (tu peux stocker l'id_compte si tu veux le lier)
+            $stmtInv = $db->prepare("INSERT INTO investissement (libelle, montant, id_client, id_type_investissement) VALUES (?, ?, ?, ?)");
+            $stmtInv->execute([
+                $data->libelle,
+                $data->montant,
+                $data->id_client,
+                $data->id_type_investissement
+            ]);
+            $id_investissement = $db->lastInsertId();
+    
+            $db->commit();
+            return [
+                'id_investissement' => $id_investissement,
+                'id_compte' => $id_compte
+            ];
+        } catch (Exception $e) {
+            $db->rollBack();
+            throw $e;
+        }
+    }
 } 
