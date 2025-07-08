@@ -1,7 +1,65 @@
 <?php
 require_once __DIR__ . '/../../db.php';
-
+require_once 'TypePret.php';
 class Pret {
+
+    public static function getDateValidation($id_pret) {
+        $db = getDB();
+        $stmt = $db->prepare("SELECT date FROM validation_pret WHERE id_pret = ? AND status = true ORDER BY date DESC LIMIT 1");
+        $stmt->execute([$id_pret]);
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $res ? $res['date'] : null;
+    }
+
+    public static function rembourserMois($id_pret, $mois, $date_echeance) {
+        $pret = self::getById($id_pret);
+        if (!$pret) return null;
+
+        $montant = $pret['montant'];
+        $taux_annuel = TypePret::getTauxInteret($pret['id_type_pret']);
+        $taux_mensuel = $taux_annuel / 12 / 100;
+        $n = $pret['nombre_mensualite'];
+
+        $annuite = ($montant * $taux_mensuel) / (1 - pow(1 + $taux_mensuel, -$n));
+
+        try {
+            Payement::create((object)[
+                    'id_pret' => $id_pret,
+                    'id_type_payement' => 1,
+                    'montant' => round($annuite, 2),
+                    'date' => $date_echeance
+                ]);
+        } catch (Exception $e) {
+            error_log("Erreur création payement : " . $e->getMessage());
+            Flight::halt(500, 'Erreur lors de la création du paiement.');
+        }
+
+        return [
+            'mois' => $mois,
+            'montant' => round($annuite, 2),
+            'date_echeance' => $date_echeance
+        ];
+    }
+
+    public static function rembourserPret($id_pret) {
+        $pret = self::getById($id_pret);
+        if (!$pret) return null;
+
+        $n = $pret['nombre_mensualite'];
+        $validationDate = self::getDateValidation($id_pret);
+        if (!$validationDate) return null;
+
+        $start = new DateTime($validationDate);
+        $echeancier = [];
+
+        for ($i = 0; $i < $n; $i++) {
+            $date = (clone $start)->modify("+$i month")->format('Y-m-d');
+            $echeancier[] = self::rembourserMois($id_pret, $i + 1, $date);
+        }
+
+        return $echeancier;
+    }
+
     public static function validerPret($id_pret, $id_utilisateur) {
         $db = getDB();
         $stmt = $db->prepare("INSERT INTO validation_pret (id_pret, id_utilisateur, status) VALUES (?, ?, true)");
@@ -20,6 +78,17 @@ class Pret {
         $stmt->execute([$id_pret]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result && $result['status'] === '1';
+    }
+
+    public static function getAllPretNonTraite() {
+        $db = getDB();
+        $stmt = $db->query("
+            SELECT p.* 
+            FROM pret p
+            LEFT JOIN validation_pret vp ON p.id = vp.id_pret
+            WHERE vp.id_pret IS NULL
+        ");
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
     public static function getAll() {
