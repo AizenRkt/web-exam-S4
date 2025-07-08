@@ -168,9 +168,11 @@ class Pret {
             SELECT p.*, c.nom as client_nom, c.prenom as client_prenom, c.email as client_email, 
                    c.telephone as client_telephone, c.adresse as client_adresse,
                    tp.libelle as type_pret_libelle, tp.taux_interet, tp.description as type_pret_description
+                    tpay.libelle as type_payement_libelle, tpay.description as type_payement_description
             FROM pret p
             JOIN client c ON p.id_client = c.id
             JOIN type_pret tp ON p.id_type_pret = tp.id
+            JOIN type_payement tpay ON p.id_type_payement = tpay.id
             WHERE p.id = ?
         ");
         $stmt->execute([$id]);
@@ -179,15 +181,15 @@ class Pret {
 
     public static function create($data) {
         $db = getDB();
-        $stmt = $db->prepare("INSERT INTO pret (libelle, montant, id_type_pret, id_client, nombre_mensualite, delai_remboursement) VALUES (?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$data->libelle, $data->montant, $data->id_type_pret, $data->id_client, $data->nombre_mensualite, $data->delai_remboursement]);
+        $stmt = $db->prepare("INSERT INTO pret (libelle, montant, id_type_pret,id_type_payement, id_client, nombre_mensualite, delai_remboursement) VALUES (?, ?, ?,?, ?, ?, ?)");
+        $stmt->execute([$data->libelle, $data->montant, $data->id_type_pret, $data->id_type_payement, $data->id_client, $data->nombre_mensualite, $data->delai_remboursement]);
         return $db->lastInsertId();
     }
 
     public static function update($id, $data) {
         $db = getDB();
-        $stmt = $db->prepare("UPDATE pret SET libelle = ?, montant = ?, id_type_pret = ?, id_client = ?, nombre_mensualite = ? WHERE id = ?");
-        $stmt->execute([$data->libelle, $data->montant, $data->id_type_pret, $data->id_client, $data->nombre_mensualite, $id]);
+        $stmt = $db->prepare("UPDATE pret SET libelle = ?, montant = ?, id_type_pret = ?,id_type_payement = ?, id_client = ?, nombre_mensualite = ? WHERE id = ?");
+        $stmt->execute([$data->libelle, $data->montant, $data->id_type_pret, $data->id_type_payement, $data->id_client, $data->nombre_mensualite, $id]);
     }
 
     public static function delete($id) {

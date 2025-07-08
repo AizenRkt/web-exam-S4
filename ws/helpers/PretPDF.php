@@ -8,12 +8,14 @@ class PretPDF extends FPDF {
     private $pret;
     private $client;
     private $typePret;
+    private $typepayement;
     
-    public function __construct($pret, $client, $typePret) {
+    public function __construct($pret, $client, $typePret,$typepayement) {
         parent::__construct();
         $this->pret = $pret;
         $this->client = $client;
         $this->typePret = $typePret;
+        $this->typepayement = $typepayement;
     }
     
     function Header() {
@@ -90,6 +92,14 @@ class PretPDF extends FPDF {
         
         $this->Cell(50, 8, 'Type de pret:', 0, 0);
         $this->Cell(0, 8, $this->typePret['libelle'], 0, 1);
+        
+        // Ajout du type de payement
+        $this->Cell(50, 8, 'Type de paiement:', 0, 0);
+        $this->Cell(0, 8, $this->typepayement['libelle'], 0, 1);
+        if (!empty($this->typepayement['description'])) {
+            $this->Cell(50, 8, '', 0, 0);
+            $this->MultiCell(0, 8, $this->typepayement['description'], 0, 'L');
+        }
         
         $this->Cell(50, 8, 'Montant:', 0, 0);
         $this->SetFont('Arial', 'B', 12);

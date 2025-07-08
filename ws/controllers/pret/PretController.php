@@ -98,9 +98,17 @@ class PretController {
             'taux_interet' => $pretDetails['taux_interet'],
             'description' => $pretDetails['type_pret_description']
         ];
+
+        
+$typePayement = [
+    'libelle' => $pretDetails['type_payement_libelle'],
+    'description' => $pretDetails['type_payement_description']
+];
+
+        
         
         // Créer le PDF
-        $pdf = new PretPDF($pret, $client, $typePret);
+        $pdf = new PretPDF($pret, $client, $typePret,$typePayement);
         $pdf->generatePretDocument();
         
         // Générer le nom du fichier

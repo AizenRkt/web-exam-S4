@@ -19,3 +19,5 @@ SET FOREIGN_KEY_CHECKS = 1;
 
 ALTER TABLE role ADD COLUMN autorisation INTEGER NOT NULL;
 ALTER TABLE pret ADD COLUMN delai_remboursement INTEGER NOT NULL;
+
+SELECT*from type_payement;
