@@ -33,6 +33,10 @@
                 <option value="">-- Sélectionner un type de prêt --</option>
                 </select>
 
+                <select id="type_payement_select">
+                <option value="">-- Sélectionner un type de payement --</option>
+                </select>
+
                 <button onclick="envoyerDemande()">Soumettre la demande</button>
             </div>
         </div>
@@ -71,6 +75,19 @@
         });
     }
 
+    
+    function chargerTypesPayement() {
+        ajax("GET", "/typepayements", null, (data) => {
+            const select = document.getElementById("type_payement_select");
+            data.forEach(t => {
+            const option = document.createElement("option");
+            option.value = t.id;
+            option.textContent = `${t.libelle}`;
+            select.appendChild(option);
+            });
+        });
+    }
+
     function envoyerDemande() {
         const libelle = document.getElementById("libelle").value;
         const montant = parseFloat(document.getElementById("montant").value);
@@ -78,6 +95,7 @@
         const delai = parseInt(document.getElementById("delai_remboursement").value);
         const id_client = parseInt(document.getElementById("id_client").value);
         const id_type_pret = parseInt(document.getElementById("type_pret_select").value);
+        const id_type_payement = parseInt(document.getElementById("type_payement_select").value);
 
         if (!libelle || !montant || !mensualites || isNaN(delai) || !id_client || !id_type_pret) {
             alert("Veuillez remplir tous les champs !");
@@ -98,7 +116,7 @@
         }, true);
     }
 
-
+    chargerTypesPayement();
     chargerTypes();
 </script>
 </html>
