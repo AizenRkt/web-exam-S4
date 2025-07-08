@@ -37,18 +37,49 @@
 
                 <li class="sidebar-title">Fond</li>
                     <li class="sidebar-item">
-                        <a href="<?= Flight::get('flight.base_url') ?>/graphBenefice" class='sidebar-link'>
-                            <i class="bi bi-cash-stack"></i>
+                        <a href="<?= Flight::get('flight.base_url') ?>/typeinvestissement/add" class='sidebar-link'>
+                            <i class="bi bi-bank"></i>
+                            <span>Ajouter type de fond</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a href="<?= Flight::get('flight.base_url') ?>/investissement/add" class='sidebar-link'>
+                            <i class="bi bi-wallet2"></i>
                             <span>Ajouter dans le solde</span>
                         </a>
                     </li>
 
                     <li class="sidebar-item">
-                        <a href="<?= Flight::get('flight.base_url') ?>/demande-pret" class='sidebar-link'>
-                            <i class="bi bi-receipt-cutoff"></i>
+                        <a href="<?= Flight::get('flight.base_url') ?>/investissement/list" class='sidebar-link'>
+                            <i class="bi bi-journal-text"></i>
                             <span>Liste des transactions</span>
                         </a>
                     </li>
+
+
+                <li class="sidebar-title">Client</li>
+                    <li class="sidebar-item">
+                        <a href="<?= Flight::get('flight.base_url') ?>/typeclients/add" class='sidebar-link'>
+                            <i class="bi bi-person-badge"></i>
+                            <span>Ajouter type de client</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a href="<?= Flight::get('flight.base_url') ?>/client/add" class='sidebar-link'>
+                            <i class="bi bi-person-plus"></i>
+                            <span>Ajouter client</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a href="<?= Flight::get('flight.base_url') ?>/client/list" class='sidebar-link'>
+                            <i class="bi bi-people"></i>
+                            <span>Liste des clients</span>
+                        </a>
+                    </li>
+
 
                 <li class="sidebar-title">prochain</li>
                 <li class="sidebar-item  has-sub">
