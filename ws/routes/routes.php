@@ -1,33 +1,18 @@
 <?php
-require_once __DIR__ . '/../controllers/client/ClientController.php';
-require_once __DIR__ . '/../controllers/other/LoginController.php';
+require_once __DIR__ . '/../controllers/autres/UtilisateurController.php';
 require_once __DIR__ . '/../routes/client_routes.php';
 require_once __DIR__ . '/../routes/investissement_routes.php';
+require_once __DIR__ . '/../controllers/autres/RoleController.php';
 
 // //  Étudiant
-// Flight::route('GET /etudiants', ['EtudiantController', 'getAll']);
-// Flight::route('GET /etudiants/@id', ['EtudiantController', 'getOne']);
-// Flight::route('POST /etudiants', ['EtudiantController', 'create']);
-// Flight::route('PUT /etudiants/@id', ['EtudiantController', 'update']);
-// Flight::route('DELETE /etudiants/@id', ['EtudiantController', 'delete']);
 
 // // Login
-// Flight::route('GET /login', ['LoginController', 'afficher']);
-// Flight::route('POST /login', ['LoginController', 'connecter']);
+Flight::route('GET /', ['UtilisateurController', 'afficher_log']);
+Flight::route('POST /connexion', ['UtilisateurController', 'connecter']);
+Flight::route('GET /inscription', ['UtilisateurController', 'afficher_sign']);
+Flight::route('POST /inscription', ['UtilisateurController', 'inscrire']);
+Flight::route('GET /acceuil', ['UtilisateurController', 'affiche_acceuil']);
 
 
-// Etablissement 
-// Flight::route('GET /etablissement', ['EtablissementController', 'afficher']);
-
-// //Investisseur
-// Flight::route('GET /investisseur', ['InvestisseurController', 'afficher']);
-
-// // Login
-// Flight::route('GET /login', ['LoginController', 'afficher_log']);
-// Flight::route('POST /login', ['LoginController', 'connecter']);
-// Flight::route('GET /signin', ['LoginController', 'afficher_sign']);
-// Flight::route('POST /signin', ['LoginController', 'inscrire']);
-
+Flight::route('GET /roles', ['RoleController', 'getAll']);
 // // Après connexion
-// Flight::route('GET /directeur/dashboard', ['HelloController', 'afficher']);
-// Flight::route('GET /employe/dashboard', ['HelloController', 'afficher']);

@@ -1,42 +1,27 @@
 <?php
 require_once __DIR__ . '/../../db.php';
+require_once __DIR__ . '/Role.php';
 
-class User
+class Utilisateur
 {
-    // Vérifie les identifiants et le rôle (email + mot de passe + rôle)
-    public static function verifierConnexion($email, $mot_de_passe, $role) {
+    public static function verifierConnexion($email, $mot_de_passe) {
         $db = getDB();
-    
-        $stmt = $db->prepare("
-            SELECT u.*, r.libelle AS role 
-            FROM utilisateur u
-            JOIN role r ON u.id_role = r.id
-            WHERE u.email = ? AND r.libelle = ?
-        ");
-        
-        // Trim des valeurs
-        $email = trim($email);
-        $role = trim($role);
-    
-        $stmt->execute([$email, $role]);
-    
-        $user = $stmt->fetch(PDO::FETCH_ASSOC);
-    
-        if ($user) {
-            echo "✅ Utilisateur trouvé<br>";
-            echo "Mot de passe fourni : " . $mot_de_passe . "<br>";
-            echo "Hash en base : " . $user['mot_de_passe'] . "<br>";
-    
-            if (password_verify($mot_de_passe, $user['mot_de_passe'])) {
-                echo "✅ Mot de passe correct<br>";
-                return $user;
-            } else {
-                echo "❌ Mot de passe incorrect<br>";
+        $stmt = $db->prepare("SELECT * FROM utilisateur WHERE email = ?");
+        $stmt->execute([trim($email)]);
+        $utilisateur = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($utilisateur && password_verify($mot_de_passe, $utilisateur['mot_de_passe'])) {
+            // Récupérer le rôle
+            $role = null;
+            $stmtRole = $db->prepare("SELECT * FROM role WHERE id = ?");
+            $stmtRole->execute([$utilisateur['id_role']]);
+            $role = $stmtRole->fetch(PDO::FETCH_ASSOC);
+            if ($role) {
+                $utilisateur['role'] = $role['libelle'];
+                $utilisateur['autorisation'] = $role['autorisation'];
             }
-        } else {
-            echo "❌ Aucun utilisateur trouvé avec cet email et rôle<br>";
+            return $utilisateur;
         }
-    
         return false;
     }    
     
@@ -84,20 +69,20 @@ class User
     public static function create($data) {
         $db = getDB();
     
-        $hashedPwd = password_hash($data->mot_de_passe, PASSWORD_DEFAULT);
+        $hashedPwd = password_hash($data['mot_de_passe'], PASSWORD_DEFAULT);
     
         $stmt = $db->prepare("
             INSERT INTO utilisateur (nom, prenom, email, mot_de_passe, telephone, adresse, id_role)
             VALUES (?, ?, ?, ?, ?, ?, ?)
         ");
         $stmt->execute([
-            $data->nom,
-            $data->prenom,
-            $data->email,
+            $data['nom'],
+            $data['prenom'],
+            $data['email'],
             $hashedPwd,
-            $data->telephone,
-            $data->adresse,
-            $data->id_role
+            $data['telephone'],
+            $data['adresse'],
+            $data['id_role']
         ]);
     
         return $db->lastInsertId();
@@ -107,7 +92,7 @@ class User
     public static function update($id, $data)
     {
         $db = getDB();
-        $hashedPwd = password_hash($data->mot_de_passe, PASSWORD_DEFAULT);
+        $hashedPwd = password_hash($data['mot_de_passe'], PASSWORD_DEFAULT);
 
         $stmt = $db->prepare("
             UPDATE utilisateur 
@@ -115,13 +100,13 @@ class User
             WHERE id = ?
         ");
         $stmt->execute([
-            $data->id_role,
-            $data->nom,
-            $data->prenom,
-            $data->email,
+            $data['id_role'],
+            $data['nom'],
+            $data['prenom'],
+            $data['email'],
             $hashedPwd,
-            $data->telephone ?? null,
-            $data->adresse ?? null,
+            $data['telephone'] ?? null,
+            $data['adresse'] ?? null,
             $id
         ]);
     }
@@ -133,4 +118,6 @@ class User
         $stmt = $db->prepare("DELETE FROM utilisateur WHERE id = ?");
         $stmt->execute([$id]);
     }
+
+   
 }
