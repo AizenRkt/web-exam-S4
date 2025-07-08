@@ -35,12 +35,10 @@
                                 <i class="bi bi-shield-lock"></i>
                             </div>
                         </div>
-
                         <button type="submit" class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Se connecter</button>
                     </form>
                     <div class="text-center mt-5 text-lg fs-4">
-                        <p class="text-gray-600">Pas encore de compte ? <a href="/inscription" class="font-bold">S'inscrire</a></p>
-                        <p><a class="font-bold" href="/mot-de-passe-oublie">Mot de passe oublié ?</a></p>
+                        <p class="text-gray-600">Pas encore de compte ? <a href="<?= Flight::request()->base ?>/inscription" class="font-bold">s'inscrire</a></p>
                     </div>
                 </div>
             </div>
@@ -69,7 +67,6 @@
         
         const email = document.getElementById('email').value.trim();
         const mot_de_passe = document.getElementById('mot_de_passe').value;
-        const toast = new bootstrap.Toast(document.getElementById('liveToast'));
         const toastMessage = document.getElementById('toast-message');
 
         // Réinitialisation des états
@@ -120,7 +117,7 @@
 
         xhr.send(JSON.stringify({
             email: email,
-            mot_de_passe: mot_de_passe,
+            mot_de_passe: mot_de_passe
         }));
     });
 
@@ -133,12 +130,14 @@
         toastMessage.textContent = message;
         
         // Afficher le toast
-        new bootstrap.Toast(toast).show();
+        const toastInstance = new bootstrap.Toast(toast);
+        toastInstance.show();
     }
     </script>
     
-    <!-- Scripts Bootstrap -->
+    <!-- Scripts Bootstrap - Vérifiez que ces fichiers existent bien à ces emplacements -->
+    <script src="<?= Flight::request()->base ?>/public/assets/static/js/vendors/bootstrap.js"></script>
+    <script src="<?= Flight::request()->base ?>/public/assets/static/js/vendors/jquery.js"></script>
     <script src="<?= Flight::request()->base ?>/public/assets/compiled/js/app.js"></script>
-    <script src="<?= Flight::request()->base ?>/public/assets/compiled/js/bootstrap.js"></script>
 </body>
 </html>
