@@ -36,6 +36,21 @@
                     </li>
 
                 <li class="sidebar-title">Fond</li>
+                    <li class="sidebar-item">
+                        <a href="<?= Flight::get('flight.base_url') ?>/graphBenefice" class='sidebar-link'>
+                            <i class="bi bi-cash-stack"></i>
+                            <span>Ajouter dans le solde</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-item">
+                        <a href="<?= Flight::get('flight.base_url') ?>/demande-pret" class='sidebar-link'>
+                            <i class="bi bi-receipt-cutoff"></i>
+                            <span>Liste des transactions</span>
+                        </a>
+                    </li>
+
+                <li class="sidebar-title">prochain</li>
                 <li class="sidebar-item  has-sub">
                     <a href="#" class="sidebar-link">
                         <i class="bi bi-building"></i>
