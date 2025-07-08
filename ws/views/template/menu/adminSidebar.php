@@ -11,21 +11,27 @@
             <ul class="menu"> 
                 <li class="sidebar-title">Pret</li>
                     <li class="sidebar-item">
+                        <a href="<?= Flight::get('flight.base_url') ?>/graphBenefice" class='sidebar-link'>
+                            <i class="bi bi-bar-chart-line"></i>
+                            <span>graphiques des intérêts</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
                         <a href="<?= Flight::get('flight.base_url') ?>/demande-pret" class='sidebar-link'>
-                            <i class="bi bi-person-lines-fill"></i> <!-- Plus adapté pour une demande de prêt individuelle -->
-                            <span>Demande de prêt</span>
+                            <i class="bi bi-person-lines-fill"></i>
+                            <span>Demande</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
                         <a href="<?= Flight::get('flight.base_url') ?>/prets/validation" class='sidebar-link'>
-                            <i class="bi bi-hourglass-split"></i> <!-- Pour représenter un traitement en attente -->
-                            <span>Prêts non traités</span>
+                            <i class="bi bi-hourglass-split"></i>
+                            <span>Non traités</span>
                         </a>
                     </li>
                     <li class="sidebar-item">
                         <a href="<?= Flight::get('flight.base_url') ?>/creationTypePret" class='sidebar-link'>
-                            <i class="bi bi-ui-checks"></i> <!-- Pour la création/gestion de types de prêt -->
-                            <span>Créer des types de prêt</span>
+                            <i class="bi bi-ui-checks"></i>
+                            <span>Créer des Types à intérêt variables</span>
                         </a>
                     </li>
 
