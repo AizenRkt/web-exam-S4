@@ -13,12 +13,11 @@ class Pret {
 
     public static function getDelaiRemboursement($id_pret) {
         $db = getDB();
-        $stmt = $db->prepare("SELECT delai_remboursement FROM pret WHERE id_pret = ?");
+        $stmt = $db->prepare("SELECT delai_remboursement FROM pret WHERE id = ?");
         $stmt->execute([$id_pret]);
         $res = $stmt->fetch(PDO::FETCH_ASSOC);
-        return $res ? $res['date'] : null;
+        return $res ? $res['delai_remboursement'] : null;
     }
-
 
     public static function rembourserMois($id_pret, $mois, $date_echeance) {
         $pret = self::getById($id_pret);
@@ -50,7 +49,7 @@ class Pret {
         ];
     }
 
-    public static function rembourserPret($id_pret, $delai) {
+    public static function rembourserPret($id_pret) {
         $pret = self::getById($id_pret);
         if (!$pret) return null;
 
@@ -72,6 +71,30 @@ class Pret {
 
         return $echeancier;
     }
+
+    // public static function rembourserPret($id_pret, $delai) {
+    //     $pret = self::getById($id_pret);
+    //     if (!$pret) return null;
+
+    //     $n = $pret['nombre_mensualite'];
+    //     $validationDate = self::getDateValidation($id_pret);
+    //     if (!$validationDate) return null;
+
+    //     // $delaiRemboursement = self::getDelaiRemboursement($id_pret);
+    //     // if (!$delaiRemboursement) return null;
+
+    //     $start = (new DateTime($validationDate));
+    //     // ->modify("+$delaiRemboursement month");
+
+    //     $echeancier = [];
+
+    //     for ($i = 0; $i < $n; $i++) {
+    //         $date = (clone $start)->modify("+$i month")->format('Y-m-d');
+    //         $echeancier[] = self::rembourserMois($id_pret, $i + 1, $date);
+    //     }
+
+    //     return $echeancier;
+    // }
 
     // public static function rembourserPret($id_pret, $delai) { 
     //     $pret = self::getById($id_pret);
