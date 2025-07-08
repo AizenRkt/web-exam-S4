@@ -18,26 +18,28 @@ class PretController {
         include __DIR__ . '/../../views/pret/listePret.php';
     }
 
-    public static function simulationEcheancier($id) {
-        $echeancier = Pret::rembourserPret($id);
-        if (!$echeancier) {
-            Flight::json(['error' => 'Prêt introuvable'], 404);
-            return;
-        }
+    // public static function simulationEcheancier($id) {
+    //     $echeancier = Pret::rembourserPret($id);
+    //     if (!$echeancier) {
+    //         Flight::json(['error' => 'Prêt introuvable'], 404);
+    //         return;
+    //     }
 
-        Flight::json([
-            'pret_id' => $id,
-            'echeancier' => $echeancier,
-            'message' => "Échéancier généré"
-        ]);
-    }
+    //     Flight::json([
+    //         'pret_id' => $id,
+    //         'echeancier' => $echeancier,
+    //         'message' => "Échéancier généré"
+    //     ]);
+    // }
 
+    
     public static function validerPret($id) {
         $data = Flight::request()->data;
 
         Pret::validerPret($id, $data->id_utilisateur);
 
-        $echeancier = Pret::rembourserPret($id);
+        $delai = 0;
+        $echeancier = Pret::rembourserPret($id, $delai);
 
         Flight::json([
             'message' => 'prêt validé et remboursement simulé',

@@ -11,6 +11,15 @@ class Pret {
         return $res ? $res['date'] : null;
     }
 
+    public static function getDelaiRemboursement($id_pret) {
+        $db = getDB();
+        $stmt = $db->prepare("SELECT delai_remboursement FROM pret WHERE id_pret = ?");
+        $stmt->execute([$id_pret]);
+        $res = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $res ? $res['date'] : null;
+    }
+
+
     public static function rembourserMois($id_pret, $mois, $date_echeance) {
         $pret = self::getById($id_pret);
         if (!$pret) return null;
@@ -41,7 +50,7 @@ class Pret {
         ];
     }
 
-    public static function rembourserPret($id_pret) {
+    public static function rembourserPret($id_pret, $delai) {
         $pret = self::getById($id_pret);
         if (!$pret) return null;
 
@@ -49,7 +58,11 @@ class Pret {
         $validationDate = self::getDateValidation($id_pret);
         if (!$validationDate) return null;
 
-        $start = new DateTime($validationDate);
+        $delaiRemboursement = self::getDelaiRemboursement($id_pret);
+        if (!$delaiRemboursement) return null;
+
+        $start = (new DateTime($validationDate))->modify("+$delaiRemboursement month");
+
         $echeancier = [];
 
         for ($i = 0; $i < $n; $i++) {
@@ -59,6 +72,28 @@ class Pret {
 
         return $echeancier;
     }
+
+    // public static function rembourserPret($id_pret, $delai) { 
+    //     $pret = self::getById($id_pret);
+    //     if (!$pret) return null;
+
+    //     $n = $pret['nombre_mensualite'];
+    //     $validationDate = self::getDateValidation($id_pret);
+    //     if (!$validationDate) return null;
+
+    //     $start = new DateTime($validationDate);
+    //     $start->modify("+$delai month");
+
+    //     $echeancier = [];
+
+    //     for ($i = 0; $i < $n; $i++) {
+    //         $date = (clone $start)->modify("+$i month")->format('Y-m-d');
+    //         $echeancier[] = self::rembourserMois($id_pret, $i + 1, $date);
+    //     }
+
+    //     return $echeancier;
+    // }
+
 
     public static function validerPret($id_pret, $id_utilisateur) {
         $db = getDB();
@@ -121,8 +156,8 @@ class Pret {
 
     public static function create($data) {
         $db = getDB();
-        $stmt = $db->prepare("INSERT INTO pret (libelle, montant, id_type_pret, id_client, nombre_mensualite) VALUES (?, ?, ?, ?, ?)");
-        $stmt->execute([$data->libelle, $data->montant, $data->id_type_pret, $data->id_client, $data->nombre_mensualite]);
+        $stmt = $db->prepare("INSERT INTO pret (libelle, montant, id_type_pret, id_client, nombre_mensualite, delai_remboursement) VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt->execute([$data->libelle, $data->montant, $data->id_type_pret, $data->id_client, $data->nombre_mensualite, $data->delai_remboursement]);
         return $db->lastInsertId();
     }
 

@@ -35,17 +35,10 @@
                                 <i class="bi bi-shield-lock"></i>
                             </div>
                         </div>
-                        <div class="form-check form-check-lg d-flex align-items-end">
-                            <input class="form-check-input me-2" type="checkbox" id="rememberMe">
-                            <label class="form-check-label text-gray-600" for="rememberMe">
-                                Se souvenir de moi
-                            </label>
-                        </div>
                         <button type="submit" class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Se connecter</button>
                     </form>
                     <div class="text-center mt-5 text-lg fs-4">
-                        <p class="text-gray-600">Pas encore de compte ? <a href="/inscription" class="font-bold">S'inscrire</a></p>
-                        <p><a class="font-bold" href="/mot-de-passe-oublie">Mot de passe oublié ?</a></p>
+                        <p class="text-gray-600">Pas encore de compte ? <a href="<?= Flight::request()->base ?>/inscription" class="font-bold">s'inscrire</a></p>
                     </div>
                 </div>
             </div>

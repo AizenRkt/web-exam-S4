@@ -32,6 +32,7 @@
                 <th>Montant</th>
                 <th>Client</th>
                 <th>Mensualités</th>
+                <th>délai remboursement</th>
                 <th>Date</th>
                 <th>Actions</th>
                 </tr>
@@ -71,6 +72,7 @@
                 <td>${p.montant}</td>
                 <td>${p.id_client}</td>
                 <td>${p.nombre_mensualite}</td>
+                <td>${p.delai_remboursement}</td>
                 <td>${p.date}</td>
                 <td>
                 <button onclick="validerPret(${p.id}, 1)">✅ Valider</button>
