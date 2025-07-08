@@ -26,15 +26,15 @@ class TypePret {
 
     public static function create($data) {
         $db = getDB();
-        $stmt = $db->prepare("INSERT INTO type_pret (libelle, taux_interet, description) VALUES (?, ?, ?)");
-        $stmt->execute([$data->libelle, $data->taux_interet, $data->description]);
+        $stmt = $db->prepare("INSERT INTO type_pret (libelle, taux_interet,taux_assurance, description) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$data->libelle, $data->taux_interet,$data->taux_assurance, $data->description]);
         return $db->lastInsertId();
     }
 
     public static function update($id, $data) {
         $db = getDB();
-        $stmt = $db->prepare("UPDATE type_pret SET libelle = ?, taux_interet = ?, description = ? WHERE id = ?");
-        $stmt->execute([$data->libelle, $data->taux_interet, $data->description, $id]);
+        $stmt = $db->prepare("UPDATE type_pret SET libelle = ?, taux_interet = ?,taux_assurance=?, description = ? WHERE id = ?");
+        $stmt->execute([$data->libelle, $data->taux_interet, $data->taux_assurance, $data->description, $id]);
     }
 
     public static function delete($id) {

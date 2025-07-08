@@ -28,6 +28,7 @@
               <input type="hidden" id="id">
               <input type="text" id="libelle" placeholder="Libellé">
               <input type="number" step="0.01" id="taux_interet" placeholder="Taux d'intérêt (%)">
+              <input type="number" step="0.01" id="taux_assurance" placeholder="Taux d'assurance (%)">
               <textarea id="description" placeholder="Description" rows="2" cols="30"></textarea>
               <button onclick="ajouterOuModifier()">Ajouter / Modifier</button>
             </div>
@@ -79,6 +80,7 @@
             <td>${t.id}</td>
             <td>${t.libelle}</td>
             <td>${t.taux_interet ?? '-'}</td>
+            <td>${t.taux_assurance ?? '-'}</td>
             <td>${t.description ?? ''}</td>
             <td>${t.date}</td>
             <td>
@@ -95,16 +97,17 @@
       const id = document.getElementById("id").value;
       const libelle = document.getElementById("libelle").value;
       const taux = document.getElementById("taux_interet").value;
+      const taux_assurance = document.getElementById("taux_assurance").value;
       const description = document.getElementById("description").value;
 
-      const body = { libelle, taux_interet: taux, description };
+      const body = { libelle, taux_interet: taux, taux_assurance: taux_assurance, description };
       if (id) {
         ajax("PUT", `/type-prets/${id}`, body, () => {
           resetForm();
           chargerTypes();
         }, true);
       } else {
-        const formData = `libelle=${encodeURIComponent(libelle)}&taux_interet=${encodeURIComponent(taux)}&description=${encodeURIComponent(description)}`;
+        const formData = `libelle=${encodeURIComponent(libelle)}&taux_interet=${encodeURIComponent(taux)}&taux_assurance=${encodeURIComponent(taux_assurance)}&description=${encodeURIComponent(description)}`;
         ajax("POST", "/type-prets", formData, () => {
           resetForm();
           chargerTypes();
@@ -116,8 +119,10 @@
       document.getElementById("id").value = t.id;
       document.getElementById("libelle").value = t.libelle;
       document.getElementById("taux_interet").value = t.taux_interet;
+      document.getElementById("taux_assurance").value = t.taux_assurance;
       document.getElementById("description").value = t.description;
     }
+    
 
     function supprimerType(id) {
       if (confirm("Supprimer ce type de prêt ?")) {
@@ -131,6 +136,7 @@
       document.getElementById("id").value = "";
       document.getElementById("libelle").value = "";
       document.getElementById("taux_interet").value = "";
+      document.getElementById("taux_assurance").value = "";
       document.getElementById("description").value = "";
     }
 

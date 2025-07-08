@@ -65,7 +65,12 @@ CREATE TABLE type_pret(
     description TEXT,
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
+CREATE TABLE type_payement(
+    id INTEGER PRIMARY KEY AUTO_INCREMENT,
+    libelle VARCHAR(255) NOT NULL,
+    description TEXT,
+    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
 CREATE TABLE pret(
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     libelle VARCHAR(255) NOT NULL,
@@ -74,11 +79,12 @@ CREATE TABLE pret(
     id_client INTEGER NOT NULL,
     nombre_mensualite INTEGER NOT NULL,
     delai_remboursement INTEGER NOT NULL,
-    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    id_type_payement INTEGER NOT NULL,
+    date TIMESTAMP ,
     FOREIGN KEY (id_client) REFERENCES client (id),
-    FOREIGN KEY (id_type_pret) REFERENCES type_pret (id)
+    FOREIGN KEY (id_type_pret) REFERENCES type_pret (id),
+    FOREIGN KEY (id_type_payement) REFERENCES type_payement (id)
 );
-
 CREATE TABLE validation_pret(
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     id_pret INTEGER NOT NULL,
@@ -89,12 +95,7 @@ CREATE TABLE validation_pret(
     FOREIGN KEY (id_utilisateur) REFERENCES utilisateur (id)
 );
 
-CREATE TABLE type_payement(
-    id INTEGER PRIMARY KEY AUTO_INCREMENT,
-    libelle VARCHAR(255) NOT NULL,
-    description TEXT,
-    date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+
 
 CREATE TABLE payement(
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -112,7 +113,14 @@ CREATE TABLE compte(
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+alter table payement add column interet DOUBLE PRECISION NOT NULL;
+describe type_pret;
+
+ALTER TABLE role ADD COLUMN autorisation INTEGER NOT NULL;
+alter table type_pret add column taux_assurance DOUBLE PRECISION NOT NULL;
+alter table pret add COLUMN id_type_payement INTEGER NOT NULL;
 
 
-
-
+select*from pret;
+SELECT*from payement;
+DESCRIBE pret;
