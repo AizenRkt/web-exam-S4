@@ -35,12 +35,7 @@
                                 <i class="bi bi-shield-lock"></i>
                             </div>
                         </div>
-                        <div class="form-check form-check-lg d-flex align-items-end">
-                            <input class="form-check-input me-2" type="checkbox" id="rememberMe">
-                            <label class="form-check-label text-gray-600" for="rememberMe">
-                                Se souvenir de moi
-                            </label>
-                        </div>
+
                         <button type="submit" class="btn btn-primary btn-block btn-lg shadow-lg mt-5">Se connecter</button>
                     </form>
                     <div class="text-center mt-5 text-lg fs-4">
@@ -74,7 +69,6 @@
         
         const email = document.getElementById('email').value.trim();
         const mot_de_passe = document.getElementById('mot_de_passe').value;
-        const rememberMe = document.getElementById('rememberMe').checked;
         const toast = new bootstrap.Toast(document.getElementById('liveToast'));
         const toastMessage = document.getElementById('toast-message');
 
@@ -127,7 +121,6 @@
         xhr.send(JSON.stringify({
             email: email,
             mot_de_passe: mot_de_passe,
-            remember_me: rememberMe
         }));
     });
 

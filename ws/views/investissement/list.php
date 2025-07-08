@@ -1,120 +1,79 @@
 <?php require_once __DIR__ . '/../../config/config.php'; ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Liste des investissements</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 10px;
-            border: 1px solid #ddd;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        .error {
-            color: #d9534f;
-            padding: 15px;
-            margin: 20px 0;
-            border: 1px solid #ebccd1;
-            background-color: #f2dede;
-            border-radius: 4px;
-        }
-        .loading {
-            padding: 15px;
-            color: #31708f;
-            background-color: #d9edf7;
-            border: 1px solid #bce8f1;
-            border-radius: 4px;
-        }
-        .no-data {
-            padding: 15px;
-            color: #8a6d3b;
-            background-color: #fcf8e3;
-            border: 1px solid #faebcc;
-            border-radius: 4px;
-        }
-    </style>
+    <link rel="shortcut icon" href="<?= Flight::get('flight.base_url') ?>/public/assets/compiled/svg/favicon.svg" type="image/x-icon" />
+    <link rel="stylesheet" href="<?= Flight::get('flight.base_url') ?>/public/assets/compiled/css/app.css" />
+    <link rel="stylesheet" href="<?= Flight::get('flight.base_url') ?>/public/assets/compiled/css/iconly.css" />
 </head>
 <body>
-    <h1>Liste des investissements</h1>
-    <div id="status-message"></div>
-    <table>
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Libellé</th>
-                <th>Montant</th>
-                <th>ID Client</th>
-                <th>ID Type Investissement</th>
-                <th>Date</th>
-            </tr>
-        </thead>
-        <tbody id="investissements-body">
-            <!-- Les données seront insérées ici par JavaScript -->
-        </tbody>
-    </table>
-    <script>
+<div id="app">
+    <?php Flight::render('template/menu/adminSidebar'); ?>
+    <div id="main">
+        <div class="page-heading">
+            <h3>Liste des investissements</h3>
+        </div>
+        <div class="page-content">
+            <section class="section">
+                <div id="status-message" class="alert alert-info" style="display: none;"></div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Tableau des investissements</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped" id="table-investissements">
+                                <thead class="thead-dark">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Libellé</th>
+                                        <th>Montant</th>
+                                        <th>Client</th>
+                                        <th>Type d'investissement</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="investissements-body">
+                                    <!-- Rempli dynamiquement -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+</div>
+
+<script src="<?= Flight::get('flight.base_url') ?>/public/assets/extensions/perfect-scrollbar/perfect-scrollbar.min.js"></script>
+<script src="<?= Flight::get('flight.base_url') ?>/public/assets/compiled/js/app.js"></script>
+
+<script>
     const baseUrl = "<?= defined('BASE_URL') ? BASE_URL : '' ?>";
-    function showMessage(elementId, message, type) {
-        const element = document.getElementById(elementId);
-        element.textContent = message;
-        element.className = type;
-        element.style.display = 'block';
+
+    function showMessage(id, message, type = 'info') {
+        const el = document.getElementById(id);
+        el.className = 'alert alert-' + type;
+        el.textContent = message;
+        el.style.display = 'block';
     }
-    function hideMessage(elementId) {
-        document.getElementById(elementId).style.display = 'none';
+
+    function hideMessage(id) {
+        const el = document.getElementById(id);
+        el.style.display = 'none';
     }
-    function loadInvestissements() {
-        const statusElement = 'status-message';
-        showMessage(statusElement, 'Chargement des investissements en cours...', 'loading');
-        const xhr = new XMLHttpRequest();
-        xhr.open('GET', baseUrl + '/investissements', true);
-        xhr.timeout = 10000; // 10 secondes timeout
-        xhr.onload = function() {
-            if (xhr.status === 200) {
-                try {
-                    const response = JSON.parse(xhr.responseText);
-                    if (response.success) {
-                        if (response.data && response.data.length > 0) {
-                            displayInvestissements(response.data);
-                            hideMessage(statusElement);
-                        } else {
-                            showMessage(statusElement, 'Aucun investissement trouvé dans la base de données', 'no-data');
-                        }
-                    } else {
-                        showMessage(statusElement, response.message || 'Erreur lors du chargement des données', 'error');
-                    }
-                } catch (e) {
-                    showMessage(statusElement, 'Erreur de format des données reçues', 'error');
-                }
-            } else {
-                handleHttpError(xhr);
-            }
-        };
-        xhr.onerror = function() {
-            showMessage(statusElement, 'Erreur de réseau - Impossible de se connecter au serveur', 'error');
-        };
-        xhr.ontimeout = function() {
-            showMessage(statusElement, 'Le serveur met trop de temps à répondre', 'error');
-        };
-        xhr.send();
-    }
-    function displayInvestissements(investissements) {
+
+    function displayInvestissements(data) {
         const tbody = document.getElementById('investissements-body');
         tbody.innerHTML = '';
-        investissements.forEach(function(inv) {
-            const tr = document.createElement('tr');
-            tr.innerHTML = `
+
+        data.forEach(inv => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
                 <td>${inv.id || ''}</td>
                 <td>${inv.libelle || ''}</td>
                 <td>${inv.montant || ''}</td>
@@ -122,23 +81,42 @@
                 <td>${inv.id_type_investissement || ''}</td>
                 <td>${inv.date || ''}</td>
             `;
-            tbody.appendChild(tr);
+            tbody.appendChild(row);
         });
     }
-    function handleHttpError(xhr) {
-        const statusElement = 'status-message';
-        let errorMessage = 'Erreur HTTP ' + xhr.status;
-        try {
-            const errorResponse = JSON.parse(xhr.responseText);
-            if (errorResponse.message) {
-                errorMessage += ': ' + errorResponse.message;
+
+    function loadInvestissements() {
+        showMessage('status-message', 'Chargement en cours...');
+
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET', baseUrl + '/investissements', true);
+        xhr.timeout = 10000;
+
+        xhr.onload = () => {
+            try {
+                const res = JSON.parse(xhr.responseText);
+                if (res.success) {
+                    if (res.data?.length) {
+                        displayInvestissements(res.data);
+                        hideMessage('status-message');
+                    } else {
+                        showMessage('status-message', 'Aucun investissement trouvé.', 'warning');
+                    }
+                } else {
+                    showMessage('status-message', res.message || 'Erreur inconnue', 'danger');
+                }
+            } catch (e) {
+                showMessage('status-message', 'Réponse invalide du serveur.', 'danger');
             }
-        } catch (e) {
-            errorMessage += ' - Réponse inattendue du serveur';
-        }
-        showMessage(statusElement, errorMessage, 'error');
+        };
+
+        xhr.onerror = () => showMessage('status-message', 'Erreur réseau', 'danger');
+        xhr.ontimeout = () => showMessage('status-message', 'Délai d’attente dépassé', 'danger');
+
+        xhr.send();
     }
+
     document.addEventListener('DOMContentLoaded', loadInvestissements);
-    </script>
+</script>
 </body>
-</html> 
+</html>

@@ -23,7 +23,7 @@ class UtilisateurController {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        include __DIR__ . '/../../views/template/layout/default.php';
+        Flight::redirect('/demande-pret');
     }
 
     public static function connecter() {

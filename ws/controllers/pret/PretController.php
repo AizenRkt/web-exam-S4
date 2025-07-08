@@ -18,20 +18,6 @@ class PretController {
         include __DIR__ . '/../../views/pret/listePret.php';
     }
 
-    public static function simulationEcheancier($id) {
-        $echeancier = Pret::rembourserPret($id);
-        if (!$echeancier) {
-            Flight::json(['error' => 'Prêt introuvable'], 404);
-            return;
-        }
-
-        Flight::json([
-            'pret_id' => $id,
-            'echeancier' => $echeancier,
-            'message' => "Échéancier généré"
-        ]);
-    }
-
     public static function validerPret($id) {
         $data = Flight::request()->data;
 
@@ -112,9 +98,17 @@ class PretController {
             'taux_interet' => $pretDetails['taux_interet'],
             'description' => $pretDetails['type_pret_description']
         ];
+
+        
+$typePayement = [
+    'libelle' => $pretDetails['type_payement_libelle'],
+    'description' => $pretDetails['type_payement_description']
+];
+
+        
         
         // Créer le PDF
-        $pdf = new PretPDF($pret, $client, $typePret);
+        $pdf = new PretPDF($pret, $client, $typePret,$typePayement);
         $pdf->generatePretDocument();
         
         // Générer le nom du fichier
@@ -138,4 +132,18 @@ class PretController {
         Pret::delete($id);
         Flight::json(['message' => 'Prêt supprimé']);
     }
+
+    // public static function simulationEcheancier($id) {
+    //     $echeancier = Pret::rembourserPret($id);
+    //     if (!$echeancier) {
+    //         Flight::json(['error' => 'Prêt introuvable'], 404);
+    //         return;
+    //     }
+
+    //     Flight::json([
+    //         'pret_id' => $id,
+    //         'echeancier' => $echeancier,
+    //         'message' => "Échéancier généré"
+    //     ]);
+    // }
 }

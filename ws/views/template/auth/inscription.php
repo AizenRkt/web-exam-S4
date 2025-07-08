@@ -71,7 +71,7 @@
                     </form>
                     <div id="message" class="text-center mt-3"></div>
                     <div class="text-center mt-5 text-lg fs-4">
-                        <p class='text-gray-600'>Vous avez déjà un compte? <a href="auth-login.html" class="font-bold">Se connecter</a>.</p>
+                        <p class='text-gray-600'>Vous avez déjà un compte? <a href="<?= Flight::request()->base ?>/" class="font-bold">Se connecter</a>.</p>
                     </div>
                 </div>
             </div>

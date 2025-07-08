@@ -61,6 +61,7 @@ CREATE TABLE type_pret(
     id INTEGER PRIMARY KEY AUTO_INCREMENT,
     libelle VARCHAR(255) NOT NULL,
     taux_interet DOUBLE PRECISION,
+    taux_assurance DOUBLE PRECISION,
     description TEXT,
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
@@ -72,6 +73,7 @@ CREATE TABLE pret(
     id_type_pret INTEGER NOT NULL,
     id_client INTEGER NOT NULL,
     nombre_mensualite INTEGER NOT NULL,
+    delai_remboursement INTEGER NOT NULL,
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (id_client) REFERENCES client (id),
     FOREIGN KEY (id_type_pret) REFERENCES type_pret (id)
