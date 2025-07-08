@@ -66,4 +66,5 @@ class CompteController {
     public static function showList() {
         Flight::render('compte/list.php');
     }
+    
 } 
