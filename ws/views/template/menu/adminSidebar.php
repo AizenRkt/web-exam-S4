@@ -78,34 +78,16 @@
                             <i class="bi bi-people"></i>
                             <span>Liste des clients</span>
                         </a>
+                    </li> 
+
+                <li class="sidebar-title">paramètre</li> 
+                    <li class="sidebar-item">
+                        <a href="<?= Flight::get('flight.base_url') ?>/" class='sidebar-link'>
+                            <i class="bi bi-box-arrow-right"></i>
+                            <span>Déconnexion</span>
+                        </a>
                     </li>
 
-
-                <li class="sidebar-title">prochain</li>
-                <li class="sidebar-item  has-sub">
-                    <a href="#" class="sidebar-link">
-                        <i class="bi bi-building"></i>
-                        <span>salle</span>
-                    </a>
-                
-                    <ul class="submenu submenu-closed" style="--submenu-height: 86px;">
-                        <li class="submenu-item  ">
-                            <a href="<?= Flight::get('flight.base_url') ?>/dashboard" class="submenu-link">dashboard</a>
-                        </li>
-                        <li class="submenu-item  ">
-                            <a href="<?= Flight::get('flight.base_url') ?>/materiel" class="submenu-link">matériel</a>
-                        </li>
-                        <li class="submenu-item  ">
-                            <a href="<?= Flight::get('flight.base_url') ?>/stock" class="submenu-link">stock matériel</a>
-                        </li>
-                        <li class="submenu-item  ">
-                            <a href="<?= Flight::get('flight.base_url') ?>/suivi-salle" class="submenu-link">suivi salle</a>
-                        </li>
-                        <li class="submenu-item  ">
-                            <a href="<?= Flight::get('flight.base_url') ?>/facturation/liste" class="submenu-link">facturation</a>
-                        </li>
-                    </ul>
-                </li>  
             </ul>
         </div>
     </div>
