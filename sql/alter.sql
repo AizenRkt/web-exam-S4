@@ -16,3 +16,5 @@ DROP TABLE IF EXISTS compte;
 
 -- Réactive la vérification des clés étrangères
 SET FOREIGN_KEY_CHECKS = 1;
+
+ALTER TABLE role ADD COLUMN autorisation INTEGER NOT NULL;
