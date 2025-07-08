@@ -39,6 +39,7 @@
                 <th>ID</th>
                 <th>Libellé</th>
                 <th>Taux (%)</th>
+                <th>Taux_assurance (%)</th>
                 <th>Description</th>
                 <th>Date</th>
                 <th>Actions</th>
@@ -122,7 +123,7 @@
       document.getElementById("taux_assurance").value = t.taux_assurance;
       document.getElementById("description").value = t.description;
     }
-    
+
 
     function supprimerType(id) {
       if (confirm("Supprimer ce type de prêt ?")) {
