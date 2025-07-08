@@ -2,6 +2,15 @@
 require_once __DIR__ . '/../../db.php';
 
 class TypePret {
+
+    public static function getTauxInteret($id) {
+        $db = getDB();
+        $stmt = $db->prepare("SELECT taux_interet FROM type_pret WHERE id = ?");
+        $stmt->execute([$id]);
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result ? (float) $result['taux_interet'] : null;
+    }
+
     public static function getAll() {
         $db = getDB();
         $stmt = $db->query("SELECT * FROM type_pret");

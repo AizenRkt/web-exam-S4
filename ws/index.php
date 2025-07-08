@@ -4,6 +4,11 @@ require 'db.php';
 
 Flight::set('flight.base_url', '/S4/examenS4/web-exam-S4/ws');
 
+// menu 
+Flight::map('menu', function () {
+    Flight::render('template/menu/adminSidebar.php');
+});
+
 require 'routes/routes.php';
 
 Flight::start();
