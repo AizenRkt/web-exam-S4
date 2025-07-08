@@ -13,6 +13,7 @@ Flight::route('DELETE /type-prets/@id', ['TypePretController', 'delete']);
 Flight::route('GET /prets', ['PretController', 'getAll']);
 Flight::route('GET /pretsNonTraite', ['PretController', 'getAllNonTraite']); 
 Flight::route('POST /prets', ['PretController', 'create']);
+Flight::route('GET /prets', ['PretController', 'getAll']);
 Flight::route('POST /prets/@id/valider', ['PretController', 'validerPret']);
 Flight::route('POST /prets/@id/rejeter', ['PretController', 'rejeterPret']);
 
@@ -21,3 +22,4 @@ Flight::route('GET /listePret', ['PretController', 'listePret']);
 Flight::route('GET /prets/validation', ['PretController', 'pageValidation']);
 Flight::route('GET /creationTypePret', ['TypePretController', 'creerTypePret']);
 Flight::route('GET /demande-pret', ['PretController', 'formDemandePret']);
+Flight::route('GET /prets/@id/pdf', ['PretController', 'downloadPDF']);
