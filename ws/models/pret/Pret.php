@@ -3,6 +3,18 @@ require_once __DIR__ . '/../../db.php';
 require_once 'TypePret.php';
 class Pret {
 
+    public static function getAllPretsValides() {
+        $db = getDB();
+        $stmt = $db->prepare("
+            SELECT p.*
+            FROM pret p
+            INNER JOIN validation_pret vp ON vp.id_pret = p.id
+            WHERE vp.status = 1
+        ");
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
     public static function getDateValidation($id_pret) {
         $db = getDB();
         $stmt = $db->prepare("SELECT date FROM validation_pret WHERE id_pret = ? AND status = true ORDER BY date DESC LIMIT 1");
@@ -72,52 +84,6 @@ class Pret {
         return $echeancier;
     }
 
-    // public static function rembourserPret($id_pret, $delai) {
-    //     $pret = self::getById($id_pret);
-    //     if (!$pret) return null;
-
-    //     $n = $pret['nombre_mensualite'];
-    //     $validationDate = self::getDateValidation($id_pret);
-    //     if (!$validationDate) return null;
-
-    //     // $delaiRemboursement = self::getDelaiRemboursement($id_pret);
-    //     // if (!$delaiRemboursement) return null;
-
-    //     $start = (new DateTime($validationDate));
-    //     // ->modify("+$delaiRemboursement month");
-
-    //     $echeancier = [];
-
-    //     for ($i = 0; $i < $n; $i++) {
-    //         $date = (clone $start)->modify("+$i month")->format('Y-m-d');
-    //         $echeancier[] = self::rembourserMois($id_pret, $i + 1, $date);
-    //     }
-
-    //     return $echeancier;
-    // }
-
-    // public static function rembourserPret($id_pret, $delai) { 
-    //     $pret = self::getById($id_pret);
-    //     if (!$pret) return null;
-
-    //     $n = $pret['nombre_mensualite'];
-    //     $validationDate = self::getDateValidation($id_pret);
-    //     if (!$validationDate) return null;
-
-    //     $start = new DateTime($validationDate);
-    //     $start->modify("+$delai month");
-
-    //     $echeancier = [];
-
-    //     for ($i = 0; $i < $n; $i++) {
-    //         $date = (clone $start)->modify("+$i month")->format('Y-m-d');
-    //         $echeancier[] = self::rembourserMois($id_pret, $i + 1, $date);
-    //     }
-
-    //     return $echeancier;
-    // }
-
-
     public static function validerPret($id_pret, $id_utilisateur) {
         $db = getDB();
         $stmt = $db->prepare("INSERT INTO validation_pret (id_pret, id_utilisateur, status) VALUES (?, ?, true)");
@@ -165,10 +131,11 @@ class Pret {
     public static function getByIdWithDetails($id) {
         $db = getDB();
         $stmt = $db->prepare("
-            SELECT p.*, c.nom as client_nom, c.prenom as client_prenom, c.email as client_email, 
-                   c.telephone as client_telephone, c.adresse as client_adresse,
-                   tp.libelle as type_pret_libelle, tp.taux_interet, tp.description as type_pret_description
-                    tpay.libelle as type_payement_libelle, tpay.description as type_payement_description
+            SELECT p.*, 
+                c.nom as client_nom, c.prenom as client_prenom, c.email as client_email, 
+                c.telephone as client_telephone, c.adresse as client_adresse,
+                tp.libelle as type_pret_libelle, tp.taux_interet, tp.description as type_pret_description,
+                tpay.libelle as type_payement_libelle, tpay.description as type_payement_description
             FROM pret p
             JOIN client c ON p.id_client = c.id
             JOIN type_pret tp ON p.id_type_pret = tp.id
@@ -181,8 +148,16 @@ class Pret {
 
     public static function create($data) {
         $db = getDB();
-        $stmt = $db->prepare("INSERT INTO pret (libelle, montant, id_type_pret,id_type_payement, id_client, nombre_mensualite, delai_remboursement) VALUES (?, ?, ?,?, ?, ?, ?)");
-        $stmt->execute([$data->libelle, $data->montant, $data->id_type_pret, $data->id_type_payement, $data->id_client, $data->nombre_mensualite, $data->delai_remboursement]);
+        $stmt = $db->prepare("INSERT INTO pret (libelle, montant, id_type_pret, id_type_payement, id_client, nombre_mensualite, delai_remboursement) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        $stmt->execute([
+            $data->libelle,
+            $data->montant,
+            $data->id_type_pret,
+            $data->id_type_payement,
+            $data->id_client,
+            $data->nombre_mensualite,
+            $data->delai_remboursement
+        ]);
         return $db->lastInsertId();
     }
 

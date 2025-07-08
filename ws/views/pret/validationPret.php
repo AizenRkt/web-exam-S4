@@ -75,8 +75,8 @@
                 <td>${p.delai_remboursement}</td>
                 <td>${p.date}</td>
                 <td>
-                <button onclick="validerPret(${p.id}, 1)">✅ Valider</button>
-                <button onclick="rejeterPret(${p.id}, 1)">❌ Rejeter</button>
+                <button onclick="validerPret(${p.id}, 1)">Valider</button>
+                <button onclick="rejeterPret(${p.id}, 1)">Rejeter</button>
                 </td>
             `;
             tbody.appendChild(tr);

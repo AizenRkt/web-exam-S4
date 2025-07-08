@@ -37,6 +37,11 @@ class PretController {
         Flight::json(['message' => 'Prêt rejeté']);
     }
 
+    public static function getPretValide() {
+        $prets = Pret::getAllPretsValides();
+        Flight::json($prets);
+    }
+
     public static function getAll() {
         $prets = Pret::getAll();
         Flight::json($prets);

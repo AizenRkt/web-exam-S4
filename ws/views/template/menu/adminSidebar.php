@@ -29,9 +29,21 @@
                         </a>
                     </li>
                     <li class="sidebar-item">
+                        <a href="<?= Flight::get('flight.base_url') ?>/listePret" class='sidebar-link'>
+                            <i class="bi bi-file-earmark-check"></i>
+                            <span>Prêts validés</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
                         <a href="<?= Flight::get('flight.base_url') ?>/creationTypePret" class='sidebar-link'>
                             <i class="bi bi-ui-checks"></i>
                             <span>Créer des Types à intérêt variables</span>
+                        </a>
+                    </li>
+                    <li class="sidebar-item">
+                        <a href="<?= Flight::get('flight.base_url') ?>/creationTypePret" class='sidebar-link'>
+                            <i class="bi bi-calculator"></i>
+                            <span>simulation de prêt</span>
                         </a>
                     </li>
 

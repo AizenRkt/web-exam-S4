@@ -12,6 +12,7 @@ Flight::route('DELETE /type-prets/@id', ['TypePretController', 'delete']);
 // pret 
 Flight::route('GET /prets', ['PretController', 'getAll']);
 Flight::route('GET /pretsNonTraite', ['PretController', 'getAllNonTraite']); 
+Flight::route('GET /pretsValide', ['PretController', 'getPretValide']); 
 Flight::route('POST /prets', ['PretController', 'create']);
 Flight::route('GET /prets', ['PretController', 'getAll']);
 Flight::route('POST /prets/@id/valider', ['PretController', 'validerPret']);
