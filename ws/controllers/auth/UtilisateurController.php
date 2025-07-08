@@ -1,6 +1,7 @@
 <?php
-require_once __DIR__ . '/../../models/autres/Utilisateur.php';
+require_once __DIR__ . '/../../models/auth/Utilisateur.php';
 require_once __DIR__ . '/../../config/config.php';
+require_once __DIR__ . '/../../models/auth/Role.php';
 
 class UtilisateurController {
     // Affiche le formulaire de login
@@ -8,21 +9,21 @@ class UtilisateurController {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        include __DIR__ . '/../../views/autres/connexion.php';
+        include __DIR__ . '/../../views/template/auth/connexion.php';
     }
 
     public static function afficher_sign() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        include __DIR__ . '/../../views/autres/inscription.php';
+        include __DIR__ . '/../../views/template/auth/inscription.php';
     }
 
     public static function affiche_acceuil() {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        include __DIR__ . '/../../views/autres/acceuil.php';
+        include __DIR__ . '/../../views/template/layout/default.php';
     }
 
     public static function connecter() {
@@ -92,11 +93,7 @@ class UtilisateurController {
             
             if ($utilisateur) {
                 $role = null;
-                $db = getDB();
-                $stmtRole = $db->prepare("SELECT * FROM role WHERE id = ?");
-                $stmtRole->execute([$utilisateur['id_role']]);
-                $role = $stmtRole->fetch(PDO::FETCH_ASSOC);
-                
+                $role = Role::getById($utilisateur['id_role']);
                 if ($role) {
                     $utilisateur['role'] = $role['libelle'];
                     $utilisateur['autorisation'] = $role['autorisation'];
